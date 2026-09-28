@@ -1,0 +1,53 @@
+{
+  "name": "ecomm_event_driven_pipeline",
+  "max_concurrent_runs": 1,
+  "trigger": {
+    "pause_status": "UNPAUSED",
+    "file_arrival": {
+      "url": "/Volumes/demo-external-catalog/default/incremental_load/trigger/"
+    }
+  },
+  "tasks": [
+    {
+      "task_key": "orders_stage_load",
+      "notebook_task": { "notebook_path": "<REPO_PATH>/notebook/01_orders_stage_load" }
+    },
+    {
+      "task_key": "customers_stage_load",
+      "notebook_task": { "notebook_path": "<REPO_PATH>/notebook/02_customers_stage_load" }
+    },
+    {
+      "task_key": "products_stage_load",
+      "notebook_task": { "notebook_path": "<REPO_PATH>/notebook/03_products_stage_load" }
+    },
+    {
+      "task_key": "inventory_stage_load",
+      "notebook_task": { "notebook_path": "<REPO_PATH>/notebook/04_inventory_stage_load" }
+    },
+    {
+      "task_key": "shipping_stage_load",
+      "notebook_task": { "notebook_path": "<REPO_PATH>/notebook/05_shipping_stage_load" }
+    },
+    {
+      "task_key": "data_validation",
+      "depends_on": [
+        { "task_key": "orders_stage_load" },
+        { "task_key": "customers_stage_load" },
+        { "task_key": "products_stage_load" },
+        { "task_key": "inventory_stage_load" },
+        { "task_key": "shipping_stage_load" }
+      ],
+      "notebook_task": { "notebook_path": "<REPO_PATH>/notebook/06_data_validation" }
+    },
+    {
+      "task_key": "data_enrichment",
+      "depends_on": [{ "task_key": "data_validation" }],
+      "notebook_task": { "notebook_path": "<REPO_PATH>/notebook/07_data_enrichment" }
+    },
+    {
+      "task_key": "final_merge_operation",
+      "depends_on": [{ "task_key": "data_enrichment" }],
+      "notebook_task": { "notebook_path": "<REPO_PATH>/notebook/08_final_merge_operation" }
+    }
+  ]
+}

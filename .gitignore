@@ -1,0 +1,36 @@
+# Secrets & local env
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials.json
+secrets/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Databricks local caches
+.databricks/
+*.dbc
+
+# Terraform / local state (if added later)
+*.tfstate
+*.tfstate.*
+.terraform/
+
+# Logs & temp
+*.log
+tmp/
+temp/
